@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>co函数</title>
+</head>
+<body>
+    
+</body>
+<script>
+    function*generator(){
+        yield new Promise((resolve,reject)=>{
+            setTimeout(() => {
+                resolve(1)
+            }, 500);
+        })
+        yield new Promise((resolve,reject)=>{
+            setTimeout(() => {
+                resolve(2)
+            }, 500);
+        })
+        yield new Promise((resolve,reject)=>{
+            setTimeout(() => {
+                resolve(3)
+            }, 500);
+        })
+    }
+    co(generator)
+    function co(fn){
+        let f = fn()
+        next()
+        function next(msg){
+            // msg 是上一次执行的结果
+            let res = f.next() //第一次执行 返回的是Promise
+            if(!res.done){
+                res.value.then(data=>{
+                    next(data)
+                })
+            }
+        }
+    }
+</script>
+</html>

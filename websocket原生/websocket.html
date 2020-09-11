@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>websocket</title>
+</head>
+<body>
+    <button id='send'>发送消息</button>
+</body>
+<script>
+    window.onload = function(){
+        // websocket 握手
+        const ws = new WebSocket('ws://localhost:8181');
+        ws.onopen = function(){
+            console.log('已连接')
+        }
+        ws.onmessage = function(data){
+            let josn = JSON.parse(data.data)
+            console.log(josn.name)
+        }
+        document.querySelector('#send').addEventListener('click',function(){
+            ws.send('消息 哈哈哈哈哈哈')
+        })
+    }
+</script>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue</title>
+</head>
+<body>
+    <div id='app'>
+        <div @click='change'>
+            简版本vue
+        </div>
+        <div>
+            <p>{{msg}}</p>
+        </div>
+        １
+        <div v-html='msg'></div>
+        １
+        <div v-text='msg'></div>
+        <input type="text" v-model='msg'>
+    </div>
+</body>
+<script src="./compail.js"></script>
+<script src="./vue.js"></script>
+<script>
+    window.onload = function (){
+        let vue = new Vue({
+            el:'#app',
+            data:{
+                msg:'<p>你好vue</p>'
+            },
+            methods: {
+                change(){
+                    console.log(this.h)
+                },
+                h(){
+
+                }
+            },
+            created () {
+                console.log(555)
+                // this.msg = '改变了'
+            }
+        })
+        console.log(vue.msg)
+       setTimeout(() => {
+        vue.msg = '<p>555</p>'
+       }, 1000);
+    }
+</script>
+</html>

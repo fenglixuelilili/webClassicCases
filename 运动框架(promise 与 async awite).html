@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>运动框架</title>
+</head>
+<style>
+    *{
+        padding: 0;
+        margin: 0;
+    }
+    .box{
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        position: absolute;
+        left: 0;
+        top:0;
+    }
+</style>
+<body>
+    <div class="box">
+
+    </div>
+    <script>
+        window.onload = function(){
+            function move(ele,attr,target){
+                /*
+                    ele 元素节点
+                    attr 运动的元素属性
+                    target 目标位置
+                */
+                return new Promise((resolve,reject)=>{
+                    let elem
+                    if(typeof ele === 'string'){
+                        elem = document.querySelector(ele)
+                    }else{
+                        elem = ele
+                    }
+                    // 起始位置
+                    let start = parseInt(window.getComputedStyle(elem,null)[attr])
+                    // 步长
+                    let step = ((target - start)/Math.abs((target - start)))*5
+                    function m(){
+                        let now = parseInt(window.getComputedStyle(elem,null)[attr])
+                        elem.style[attr] = now + step + 'px'
+                        if(now === target){
+                            // console.log('运动完成')
+                            resolve('运动完成')
+                        }else{
+                            window.requestAnimationFrame(m)
+                        }
+                    }
+                    m()
+                })
+            }
+            // then 方式
+            // move('.box','left',200).then(data=>{
+            //     return move('.box','top',200)
+            // }).then(data=>{
+            //     return move('.box','left',0)
+            // }).then(data=>{
+            //     return move('.box','top',0)
+            // }).then(data=>{
+            //     console.log(data)
+            // })
+            async function movefn(){
+                await move('.box','left',200)
+                await move('.box','top',200)
+                await move('.box','left',0)
+                let res = await move('.box','top',0)
+                console.log(res)
+            }
+            movefn()
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    window.onload = function (){
+        // 什么是生成器函数：就是可以迭代的函数，多次执行的函数
+        // genertor 函数遇到yield 会暂停
+        // genertor函数执行之后 返回一个genertor对象，该对象是会执行next()----返回值为{done:false,value:10}这样的对象,value为yeild后面的计算结果  函数会往下执行下一个yeild
+        function* jiecheng(number){
+            let newnumber = yield asyncX(number)
+            yield asyncX(newnumber)
+        }
+        // 异步阶乘
+        function asyncX(num){
+            return new Promise((resolve,reject)=>{
+                setTimeout(() => {
+                    console.log('执行了异步',num*num)
+                    resolve(num*num)
+                }, 1000);
+            })
+        }
+        let it = jiecheng(4)
+        // 执行 如果没有递归的话，只能一步步的next()（需要使用递归）
+        function next(NUM){
+            let {value,done} = it.next(NUM)
+            console.log(value,done,NUM)
+            if(!done){
+                // value 的值为promise 需要then解析下
+                value.then(num=>{
+                    next(num)
+                })
+            }
+        }
+        next()
+    }
+</script>
+</html>

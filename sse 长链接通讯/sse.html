@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sse</title>
+</head>
+<body>
+    <div>
+        <h1>标题</h1>
+        <div id='content'>内容</div>
+    </div>
+    <script>
+        window.onload = function(){
+            let sorse = new EventSource('/sse') //里面的/sse是接口
+            sorse.onopen = function(){
+                if(sorse.readyState == 0){
+                    console.log('数据正在连接')
+                }
+                if(sorse.readyState == 1){
+                    console.log('数据连接成功')
+                }
+                if(sorse.readyState == 2){
+                    console.log('数据连接关闭')
+                }
+            }
+            sorse.onmessage = function(e){
+                // console.log(e.data)
+                let content = document.querySelector('#content')
+                content.innerHTML = e.data
+            }
+            sorse.onerror = function(){
+                // alert('连接出错')
+            }
+        }
+    </script>
+</body>
+</html>

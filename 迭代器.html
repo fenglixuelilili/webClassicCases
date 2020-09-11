@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>迭代器</title>
+</head>
+<body>
+    
+</body>
+<script>
+    window.onload = function(){
+        /*
+            数组可迭代
+            对象不可迭代
+            使用 for of 迭代
+            实现迭代 需要实现一个 Symbol.iterator 函数
+        */
+       let obj = {
+           a:10,
+           b:20
+       }
+       let arr = [10,20]
+       obj[Symbol.iterator] = function(){
+           // 获取到所有的属性值
+           let keys = Object.keys(obj)
+           let index = 0
+           return {
+               next(){
+                   if(index == keys.length){
+                    return {
+                        done: true 
+                    }
+                   }
+                   return {
+                       done: false,
+                       value:obj[keys[index++]]
+                   }
+               }
+           }
+       }
+    //    let value =  obj[Symbol.iterator]()
+    //    console.log(value.next())
+    //    console.log(value.next())
+    //    console.log(value.next())
+        for(let value of obj){
+            // console.log(111)
+            console.log(value)
+        }
+    }
+</script>
+</html>

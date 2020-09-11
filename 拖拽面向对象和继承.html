@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    *{
+        padding: 0;
+        margin: 0;
+    }
+    .box1,.box2{
+        width: 100px;
+        height: 100px;
+        background-color: firebrick;
+        position: absolute;
+        top:50px;
+        left: 0;
+    }
+    .box2{
+        background-color: forestgreen;
+        left: 500px;
+    }
+</style>
+<body>
+    <div class="box1"></div>
+    <div class="box2"></div>
+</body>
+<script>
+    class Drag {
+        constructor(ele){
+            this._ele = this.getEle(ele)
+            console.log(this._ele)
+            this.bindOnDown()
+        }
+        getEle(ele){
+            let _ele = null
+            if(typeof ele === 'string'){
+                if(ele.indexOf('.') === 0){
+                    _ele = document.querySelector(ele)
+                }else{
+                    _ele = document.querySelector('.' + ele)
+                }
+            }else{
+                _ele = ele
+            }
+            return _ele
+        }
+        bindOnDown(){
+            this._ele.addEventListener('mousedown',(e)=>{
+                this._ele.style.zIndex = 1000000;
+                let event = e || window.event
+                let x = event.clientX - this._ele.offsetLeft
+                let y = event.clientY - this._ele.offsetTop
+                this._ele.onmousemove = this.onMove(x,y)
+                document.addEventListener('mouseup',()=>{
+                    this._ele.style.zIndex = 1;
+                    this._ele.onmousemove = null
+                })
+
+            })
+        }
+        onMove(x,y){
+            return (e)=>this.movefn(e,x,y)
+        }
+        movefn(e,x,y){
+            let event = e || window.event
+            let xx = event.clientX - x
+            let yy = event.clientY - y
+            this._ele.style.left = xx + 'px'
+            this._ele.style.top = yy + 'px'
+        }
+    }
+    // let drag2 = new Drag('.box2')
+    let drag1 = new Drag('.box1')
+    class LimitDrag extends Drag{
+        constructor(ele){
+            super(ele)
+        }
+        movefn(e,x,y){
+            let event = e || window.event
+            let xx = event.clientX - x
+            let yy = event.clientY - y
+            // console.log(xx,yy)
+            let widthScreen = window.screen.availWidth
+            let heightScreen = window.screen.availHeight
+            console.log(widthScreen,heightScreen)
+            if(xx<0){
+                xx = 0
+            }
+            if(xx>=widthScreen){
+                xx = widthScreen
+            }
+            if(yy<0){
+                yy = 0
+            }
+            if(yy>=heightScreen){
+                yy = heightScreen
+            }
+            this._ele.style.left = xx + 'px'
+            this._ele.style.top = yy + 'px'
+        }
+    }
+    let drag2 = new LimitDrag('.box2')
+    let obj = {
+        a:10,
+        bb:{
+            cc:{
+                d:20,
+                arr:[10,630]
+            }
+        }
+    }
+    let obj2 = deepCopy(obj)
+    console.log(obj2,obj2 == obj)
+    // 深拷贝
+    function deepCopy(obj){
+        let newobj = Array.isArray(obj)?[]:{}
+        for(let k in obj){
+           if(obj.hasOwnProperty(k)){
+                if(typeof obj[k] == 'object' &&　obj[k]==null){
+                    newobj[k] = null
+                }else if(typeof obj[k] == 'object' &&　obj[k]!=null){
+                    newobj[k] = deepCopy(obj[k])
+                }else{
+                    newobj[k] = obj[k]
+                }
+           }
+        }
+        return newobj
+    }
+
+</script>
+</html>

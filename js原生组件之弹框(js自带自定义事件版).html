@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>原生组件弹框</title>
+    <style>
+        *{
+            box-sizing: border-box;
+        }
+        .tk{
+            display: none;
+        }
+        .mask{
+            /* display: block; */
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top:0;
+            background-color: rgba(0,0,0,.5);
+            font-size: 14px;
+        }
+        .mask .content{
+            width: 30%;
+            height: 150px;
+            background-color: #fff;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top:0;
+            bottom: 0;
+            margin: auto;
+            border-radius: 10px;
+            padding-bottom: 35px;
+            padding: 10px;
+            box-shadow: 0 0 18px 0 rgba(0,0,0,.1);
+        }
+        .mask .content .header{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 35px;
+            line-height: 35px;
+            position: relative;
+            font-weight: 800;
+            font-size: 16px;
+        }
+        .mask .content .header .close{
+            position: absolute;
+            top:0;
+            bottom: 0;
+            margin: auto 0;
+            right: 15px;
+            cursor: pointer;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+        }
+        .footer{
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 30px;
+            width: 100%;
+            position: absolute;
+            left: 0;
+            /* right: 0; */
+            bottom:0;
+            border-top:1px solid #eee;
+        }
+        .footer button{
+            margin-left: 25px;
+            background-color: #fff;
+            border:1px solid #eee;
+            text-align: center;
+            /* border: */
+            width: 100px;
+            height: 35px;
+            line-height: 35px;
+            outline: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .footer button:hover{
+            border:1px solid #558899;
+        }
+        .footer button:last-child{
+            background-color: firebrick;
+            color: #fff;
+
+        }
+        .footer button:last-child:hover{
+            border:1px solid transparent;
+        }
+    </style>
+</head>
+<body>
+    <button id='show'>出现</button>
+</body>
+<script src='./selfEvent.js'></script>
+<script>
+class Box extends EventTarget{
+    constructor(options){
+        super()
+        this.html = ''
+        this.options = Object.assign({},{
+            width:'40%',
+            height:'150px',
+            title:'标题ttt',
+            content:'内容nnnn',
+            maskable:true,//是否有遮罩
+            isCancel:true,//是否有取消
+            success(e){console.log('点了success')},
+            cancel(e){console.log('点了取消')},
+        },options)
+        this.init()
+    }
+    init(){
+        let html = `
+            <div class="tk" id='tk'>
+                <div class="mask" style='background-color:${this.options.maskable?"rgba(0,0,0,.5)":"transparent"}'>
+                    <div class="content" style='width:${this.options.width};height:${this.options.height};'>
+                        <div class="header">
+                            ${this.options.title}
+                            <div class="close">×</div>
+                        </div>
+                        <div class="body" id='body'>
+                            ${this.options.content}
+                        </div>
+                        <div class="footer">
+                            <button class='cancel' style='display:${this.options.isCancel?"block":"none"}' id='cancel'>取消</button>
+                            <button class='success' id='success'>确定</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `
+        let div = document.createElement('div')
+        div.innerHTML = html
+        this.html = div
+        document.body.appendChild(div)
+        this._addEvents()
+        this.bindEvent()
+    }
+    _addEvents(value=''){
+        let cancel = new Event('cancel');
+        let success = new CustomEvent('success',{
+            detail:value
+        });
+        this.addEventListener('cancel',this.options.cancel)
+        this.addEventListener('success',this.options.success)
+        return {
+            cancel,
+            success
+        }
+    }
+    show(){
+        this.html.querySelector('#tk').style.display='block'
+    }
+    hide(){
+        this.html.querySelector('#tk').style.display='none'
+    }
+    confim(){
+        this.dispatchEvent(this._addEvents().success)
+    }
+    bindEvent(){
+        this.html.querySelector('#tk').addEventListener('click',function(e){
+            console.log(e.target.className,'className')
+            console.log(e.target.className.indexOf('close'))
+            if(e.target.className.indexOf('close')!=-1){
+                console.log('close')
+                this.hide()
+                this.dispatchEvent(this._addEvents().cancel)
+            }
+            if(e.target.className.indexOf('cancel')!=-1){
+                console.log('cancel')
+                this.hide()
+                this.dispatchEvent(this._addEvents().cancel)
+            }
+            if(e.target.className.indexOf('success')!=-1){
+                e.stopPropagation()
+                console.log('success')
+                this.confim()
+                this.hide()
+            }
+            if(e.target.className.indexOf('mask')!=-1){
+                console.log('mask')
+                this.hide()
+                this.dispatchEvent(this._addEvents().cancel)
+            }
+            if(e.target.className.indexOf('content')!=-1){
+                console.log('content')
+                e.stopPropagation()
+            }
+        }.bind(this))
+        // this.html.querySelector('#tk .close').addEventListener('click',function(e){
+        //     this.triggerEvent('cancel')
+        //     this.hide()
+        // }.bind(this))
+        // this.html.querySelector('#tk #cancel').addEventListener('click',function(e){
+        //     this.triggerEvent('cancel')
+        //     this.hide()
+        // }.bind(this))
+
+        // this.html.querySelector('#tk #success').addEventListener('click',function(e){
+        //     this.triggerEvent('success')
+        //     this.hide()
+        // }.bind(this))
+
+        // this.html.querySelector('#tk .mask').addEventListener('click',function(e){
+        //     this.triggerEvent('cancel')
+        //     this.hide()
+        // }.bind(this))
+        // this.html.querySelector('#tk .content').addEventListener('click',function(e){
+        //     e.stopPropagation()
+        // }.bind(this))
+    }
+}
+class Extendbox extends Box{
+    constructor(options){
+        super(options)
+        this.addInput()
+    }
+    addInput(){
+        let input = document.createElement('input')
+        input.setAttribute('type','password')
+        this.html.querySelector('#body').appendChild(input)
+    }
+    confim(){
+        
+        this.dispatchEvent(this._addEvents(this.html.querySelector('input').value).success)
+    }
+}
+let box = new Extendbox({
+    success(e){
+        console.log(e)
+    }
+})
+document.querySelector('#show').addEventListener('click',function(){
+    box.show()
+})
+</script>
+</html>
