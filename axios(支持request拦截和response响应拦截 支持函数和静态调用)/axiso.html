@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src='./myaxios.js'></script>
+</head>
+
+<body>
+    
+</body>
+<script>
+    // 添加请求拦截器
+    console.dir(axios)
+    axios.interceptors.request.use(function (config) {
+        console.log('外面的',config)
+        config.header = '大头娃娃'
+        // 在发送请求之前做些什么
+        return config;
+    }, function (error) {
+        // 对请求错误做些什么
+        return Promise.reject(error);
+    });
+
+    // 添加响应拦截器
+    axios.interceptors.response.use(function (response) {
+        // 对响应数据做点什么
+        console.log(response,'哈哈哈')
+        return {resulet:response};
+    }, function (error) {
+        // 对响应错误做点什么
+        return Promise.reject(error);
+    });
+    // axios.get('/detail',{name:'张三'}).then(data=>{
+    //     console.log(data,'data55555555555')
+    // })
+    // return
+    axios({
+        methods:'get',
+        url:'/detail',
+        data:{
+            name:'张三'
+        },
+        headers:{
+            a:50
+        }
+    }).then(data=>{
+        console.log(data,'真的够')
+    })
+    // axios 实际上执行的是一串Promise 每一个Promise 错误的话 都能捕获  ，如果全部成功 则在then中会在成功的回调函数中捕获得到
+    // axios({
+    //     methods:'post',
+    //     url:'/index',
+    //     data:{
+    //         name:'张三'
+    //     },
+    //     headers:{
+    //         'content-type':'application/json'
+    //     }
+    // }).then(data=>{
+    //     console.log(data)
+    // })
+</script>
+</html>
