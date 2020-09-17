@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>刮刮乐效果</title>
+</head>
+<style>
+    #canvas{
+        /* width: 395px;
+        height: 188px; */
+        /* background-color: #fff;
+        border: 1px solid #eee; */
+    }
+    .prize{
+        width: 395px;
+        height: 188px;
+        position: relative;
+    }
+    #canvas2{
+        position: absolute;
+        left: 0;
+        top:0;
+    }
+</style>
+<body>
+    <div class="prize">
+        <canvas id='canvas'></canvas>
+        <canvas id='canvas2'></canvas>
+    </div>
+    <script>
+        /** @type {HTMLCanvasElement} */ 
+        (function(){
+            class Canvas{
+                constructor({id,width=395,height=188}){
+                    this.id = id
+                    this.ctx = null
+                    this.width = width
+                    this.height = height
+                    this.canvas = null
+                    this.initCanvas()
+                }
+                initCanvas(){
+                    console.log(this.id)
+                    let canvas = this.id.indexOf('#') == 0?document.querySelector(this.id):document.querySelector('#' + this.id)
+                    canvas.width = this.width
+                    canvas.height = this.height
+                    console.log(canvas.getContext('2d'))
+                    this.ctx = canvas.getContext('2d')
+                    this.canvas = canvas
+                }
+                dramImg(src,x=0,y=0){
+                    let img = new Image()
+                    img.src = src 
+                    img.onload = function(){
+                        this.ctx.drawImage(img,0,0,this.width,this.height)
+                    }.bind(this)
+                }
+                shave(){
+                    let isClear = false
+                    this.canvas.onmousedown = function(){
+                        this.ctx.globalCompositeOperation = 'destination-out'
+                        isClear = true
+                    }.bind(this)
+
+                    this.canvas.onmousemove = function(e){
+                        if(isClear){
+                            const {top,left} = this.canvas.getBoundingClientRect()
+                            const [Rwidth,Rheight] = [20,20]
+                            const [x,y] = [
+                                (e.clientX - left - Rwidth/2),
+                                (e.clientY - top - Rheight/2)
+                            ]
+                            this.ctx.fillRect(x,y,Rwidth,Rheight)
+                        }
+                    }.bind(this)
+
+                    document.documentElement.onmouseup = function(e){
+                        isClear = false
+                    }
+                }
+            }
+            // 新建第一张图层
+            const canvas = new Canvas({id:'#canvas'})
+            canvas.dramImg('./images/ggl-back.jpg')
+            // 新建第二张图层
+            const canvas2 = new Canvas({id:'#canvas2'})
+            canvas2.dramImg('./images/ggl-mask.png')
+            canvas2.shave() //开始刮奖喽
+
+
+
+
+            // 面向过程
+            // const [width,height] = [395,188]
+            // canvas.width = width
+            // canvas.height = height
+            // canvas2.width = width
+            // canvas2.height = height
+            // const ctx = canvas.getContext('2d')
+            // const ctx2 = canvas2.getContext('2d')
+
+            // let isClear = false
+            // let img = new Image()
+            // img.src='./images/ggl-back.jpg'
+            // img.onload = function(){
+            //     console.log(img.width,width)
+            //     ctx.drawImage(img,0,0,width,height)
+            // }
+            // let img2 = new Image()
+            // img2.src='./images/ggl-mask.png'
+            // img2.onload = function(){
+            //     ctx2.drawImage(img2,0,0,width,height)
+            // }
+
+
+            // canvas2.onmousedown = function(){
+            //     ctx2.globalCompositeOperation = 'destination-out'
+            //     isClear = true
+            // }
+            // canvas2.onmousemove = function(e){
+            //     if(isClear){
+            //         const {top,left} = canvas2.getBoundingClientRect()
+            //         const [Rwidth,Rheight] = [50,50]
+            //         const [x,y] = [
+            //             (e.clientX - left - Rwidth/2),
+            //             (e.clientY - top - Rheight/2)
+            //         ]
+            //         ctx2.fillRect(x,y,Rwidth,Rheight)
+            //     }
+            // }
+            // document.documentElement.onmouseup = function(e){
+            //     isClear = false
+            // }
+        })()
+    </script>
+</body>
+</html>
