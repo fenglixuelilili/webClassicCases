@@ -1,0 +1,5 @@
+npm i 安装依赖  
+
+node 启动 socket.io.js  
+
+访问：http://localhost:8500/socket.io.html
