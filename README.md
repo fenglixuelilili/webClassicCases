@@ -51,6 +51,13 @@
 [面向切面编程 无侵入统计一个函数的执行时间](https://github.com/fenglixuelilili/webClassicCases/tree/master/js%E9%9D%A2%E5%90%91%E5%88%87%E9%9D%A2%E7%BC%96%E7%A8%8B%E6%A1%88%E4%BE%8B)
 
 [canvas刮刮乐效果](https://github.com/fenglixuelilili/webClassicCases/tree/master/canvas/%E5%88%AE%E5%88%AE%E4%B9%90)
+
+[惰性函数(懒函数,性能优化)](https://github.com/fenglixuelilili/webClassicCases/tree/master/JS%E9%AB%98%E9%98%B6)
+
+[函数柯里化](https://github.com/fenglixuelilili/webClassicCases/tree/master/JS%E9%AB%98%E9%98%B6)
+
+[链式调用函数](https://github.com/fenglixuelilili/webClassicCases/tree/master/JS%E9%AB%98%E9%98%B6)
+
 &emsp;
 
 ## 小结
