@@ -30,7 +30,6 @@ class Compile{
                 if(node.childNodes &&　node.childNodes.length){
                     this.compile(node)
                 }
-                // console.log(node.attributes)
                 Array.from(node.attributes).forEach(attribute=>{
                     if(this.isEvent(attribute.name)){
                         // 事件 
@@ -76,6 +75,8 @@ class Compile{
         updatafn &&　updatafn(node,vm[attr])
         new Watcher(vm,attr,function(value){
             updatafn && updatafn(node,value)
+            // 如果不写 bind(this) 将会指向Vue 
+            console.log(this) // 将this指向到Compile中
             // this.$el.appendChild(this.$fragment)
         }.bind(this))
     }

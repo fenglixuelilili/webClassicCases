@@ -71,6 +71,7 @@ class Vue {
 // 收集依赖容器
 // 是由watcher构成
 class Dep {
+    // 状态收集器
     constructor(){
         this.deps = []
     }
@@ -98,6 +99,7 @@ class Watcher {
     }
     // 就是执行里面收集的函数
     updata(){
+        console.log(this,'this')
         // Watcher 里面存放的 实际上是视图更新函数
         this.fn.call(this.vm,this.vm[this.key])
     }
