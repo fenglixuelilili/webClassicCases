@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src='https://lib.baomitu.com/echarts/4.7.0/echarts-en.common.js'></script>
+    <script src="./them.js"></script>
+    <style>
+        #chars{
+            width: 500px;
+            height: 500px;
+            margin: 50px auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="chars"></div>
+</body>
+<script>
+        // 主题使用步骤：
+        // 1下载主图
+        // 2引入
+        // 3注册主题
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('chars'),'walden');
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: 'ECharts 入门示例'
+            },
+            tooltip: {},
+            legend: {
+                data:['销量']
+            },
+            xAxis: {
+                data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+            },
+            yAxis: {},
+            series: [{
+                name: '销量',
+                type: 'bar',
+                data: [5, 20, 36, 10, 10, 20]
+            }]
+        };
+        myChart.setOption(option);
+</script>
+</html>

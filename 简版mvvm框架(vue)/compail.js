@@ -67,7 +67,6 @@ class Compile{
         if(fn){
             node.addEventListener(event,fn.bind(this.$vm))
         }
-       
     }
     updata(node,vm,attr,dir){
         let updatafn = this['updata' + dir] //具体的更新视图函数

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>worker多线程</title>
+</head>
+<body>
+    <button>点击传值</button>
+    <input type="text" id="text">
+    <div>
+        <span>接受到的值：</span>
+        <span id='yestext'>
+
+        </span>
+    </div>
+</body>
+<script>
+    // js 多线程
+    {
+        let worker = new SharedWorker('sharework1.js');
+        //    开启一个端口
+        let workerport = worker.port
+        // 开始监听
+        workerport.start()
+        workerport.addEventListener('message',function(e){
+            document.querySelector('#yestext').innerText =  e.data
+        },false)
+        
+        document.getElementsByTagName('button')[0].addEventListener('click',function(){
+            let val = document.querySelector('#text').value
+            workerport.postMessage(val)
+        })
+        setInterval(() => {
+            workerport.postMessage('get')
+        }, 1000);
+    }
+</script>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>worker多线程</title>
+</head>
+<body>
+    <button>点击事件</button>
+</body>
+<script>
+    document.getElementsByTagName('button')[0].addEventListener('click',function(){
+        alert('哈哈哈')
+    })
+    // js 多线程
+    {
+       let worker = new Worker('worker.js');
+       worker.onmessage = function(e){
+            console.log(e.data,'接收到线程发送回来的数据')
+       }
+        // 向线程内发送数据
+       worker.postMessage(123456789789)
+    }
+</script>
+</html>
