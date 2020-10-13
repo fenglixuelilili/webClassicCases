@@ -58,7 +58,7 @@
 
 [链式调用函数](https://github.com/fenglixuelilili/webClassicCases/tree/master/JS%E9%AB%98%E9%98%B6)
 
-[web—worker多线程]https://github.com/fenglixuelilili/webClassicCases/tree/master/worker%E5%A4%9A%E7%BA%BF%E7%A8%8B)
+[worker多线程]https://github.com/fenglixuelilili/webClassicCases/tree/master/worker%E5%A4%9A%E7%BA%BF%E7%A8%8B)
 
 [Promise原理 手动撸一个Promise](https://github.com/fenglixuelilili/webClassicCases/blob/master/Promise/Promise%E5%8E%9F%E7%90%86.js)
 
