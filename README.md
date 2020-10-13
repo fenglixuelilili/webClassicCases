@@ -58,6 +58,17 @@
 
 [链式调用函数](https://github.com/fenglixuelilili/webClassicCases/tree/master/JS%E9%AB%98%E9%98%B6)
 
+[web worker多线程]https://github.com/fenglixuelilili/webClassicCases/tree/master/worker%E5%A4%9A%E7%BA%BF%E7%A8%8B)
+
+[Promise原理 手动撸一个Promise](https://github.com/fenglixuelilili/webClassicCases/blob/master/Promise/Promise%E5%8E%9F%E7%90%86.js)
+
+[js设计模式与算法 二分搜索](https://github.com/fenglixuelilili/webClassicCases/blob/master/js%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%BA%8C%E5%88%86%E6%90%9C%E7%B4%A2.js)
+
+
+[js设计模式与算法 动态规划](https://github.com/fenglixuelilili/webClassicCases/blob/master/js%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92.js)
+
+[js设计模式与算法 递归](https://github.com/fenglixuelilili/webClassicCases/blob/master/js%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%80%92%E5%BD%92%E4%BC%98%E5%8C%96(%E5%8A%A0%E7%BC%93%E5%AD%98).js)
+
 &emsp;
 
 ## 小结
