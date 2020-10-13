@@ -1,5 +1,4 @@
-console.log(self)
-let msg
+let msg = ''
 onconnect = function(e){
     let workport = e.ports[0]
     workport.onmessage = function(event){

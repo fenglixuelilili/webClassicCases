@@ -6,7 +6,7 @@ class Vue {
         this.observer(this.$data)
         new Compile(this.$option.el,this)
     }
-    // 将所有的属性加入观察
+    // 将所有的属性变成观察目标
     observer(obj){
         if(!obj || Object.prototype.toString.call(obj) !== '[object Object]'){
             return
@@ -22,12 +22,14 @@ class Vue {
         if(Object.prototype.toString.call(value) === '[object Object]'){
             this.observer(value)
         }
+        // 将需要监听的函数添加到Depr中对应的监听函数列表
         let dep = new Dep()
         Object.defineProperty(obj,key,{
             enumerable: true,
             configurable: true,
             get(){
-                Dep.target&&dep.addDeeps(Dep.target)
+                // 加入观察者队列 收集watcher
+                Dep.target&&dep.addDeeps(Dep.target) //Dep.target 是一个watcher 观察者
                 return value
             },
             set(newvalue){
@@ -67,9 +69,9 @@ class Vue {
         }
     }
 }
-// export default Vue;
-// 收集依赖容器
-// 是由watcher构成
+// 收集依赖容器 --- 依赖管理器 他实际的作用是将观察目标(data数据)与 观察者(Watcher) 链接起来
+// 是由watcher(观察者)构成
+// 当一个“可观察”数据对象的属性值发生get行为的时候，将需要监听的函数添加到Depr中对应的监听函数列表
 class Dep {
     // 状态收集器
     constructor(){
@@ -85,6 +87,7 @@ class Dep {
         })
     }
 }
+// 真正的观察者(Watcher) 
 class Watcher {
     constructor(vm,key,fn){
         this.vm = vm
@@ -93,7 +96,7 @@ class Watcher {
         // 当读取
         // 读实例化Watcher的时候 将实例化的Watcher加入到Dep的静态属性上 不会丢失
         Dep.target= this
-        this.vm[this.key]
+        this.vm[this.key] // 触发get
         // 读取完毕后（也就是加入deps中后）立即删除
         Dep.target= null
     }

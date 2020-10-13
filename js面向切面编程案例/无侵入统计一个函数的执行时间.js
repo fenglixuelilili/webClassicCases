@@ -9,6 +9,8 @@ Function.prototype.before = function(fn){
     let that = this //让this指向实例函数本身 如果直接执行的话 执行fn函数的是window 或者 global
     // 如果需要链式调用 则需要返回东西
     // 这里是需要执行里面的代码 直接返回一个函数
+    // ................逻辑代码..............
+    // -----
     return function(){
         if(fn.apply(that,arguments) == false){
             return false
