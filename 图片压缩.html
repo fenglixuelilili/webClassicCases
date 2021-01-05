@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <input type="file" id='file'>
+  <script>
+    let _file = document.querySelector('#file')
+    async function compress(file, maxSize){
+      const {size,type} = file
+      // 将文件转换成base64
+      let imgbase64 = await getFileBase64(file)
+      // 创建图片  得到图片的真实路径
+      let img = new Image()
+      img.src = imgbase64
+      img.onload = function(){
+        // console.log(img.naturalWidth, img.naturalHeight)
+        // const [ naturalWidth, naturalHeight ] = img
+        
+
+        // 是否需要压缩
+        let need_compress = false, maxWidth = 1024 , maxHeight = 1024
+        console.log(size,maxSize)
+        let proportion = 4 //得到压缩比例
+
+        let naturalWidth = img.naturalWidth/(proportion)
+        let naturalHeight = img.naturalHeight/(proportion)
+        let canvas = document.createElement('canvas')
+        document.body.appendChild(canvas)
+        let ctx = canvas.getContext('2d')
+        canvas.setAttribute('id','_compress_')
+        canvas.style.visibility = 'hidden'
+        canvas.width = naturalWidth
+        canvas.height = naturalHeight
+        // 绘画
+        ctx.clearRect(0,0, naturalWidth, naturalHeight)
+        ctx.drawImage(img,0,0,naturalWidth, naturalHeight)
+        let constProess = canvas.toDataURL(type)
+        console.log(constProess)
+        let img2 = new Image()
+        img2.src = constProess
+        document.body.appendChild(img2)
+      }
+    }
+    function getFileBase64 (file){
+      return new Promise(( resolve, reject )=>{
+        let fileRender = new FileReader()
+        fileRender.readAsDataURL(file)
+        fileRender.addEventListener('load', function(e){
+          resolve(e.target.result)
+        })
+      })
+    }
+    _file.addEventListener('change',function(e){
+      console.log(e)
+      const [file] = e.target.files
+      // console.log(file)
+      let assect = ['image/png','image/jpeg','image/jpg']
+      const {size, type} = file
+      let maxSize = 1024*1024*0.1 //最大值
+      if(!assect.includes(type)){
+        alert('文件类型错误')
+        _file.value = ''
+        return
+      }
+      if(size > maxSize){
+        // 启用压缩
+        compress(file, maxSize)
+      }
+    })
+  </script>
+</body>
+</html>
