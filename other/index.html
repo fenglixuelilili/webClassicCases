@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <script src='./proxy.js'></script>
+  <title>Document</title>
+</head>
+<body>
+  <style>
+    /* 吸收底按钮 */
+    .bottom {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      bottom: constant(safe-area-bottom);
+      bottom: env(safe-area-bottom);
+      /* 带有数据的bottom
+      bottom: 10rem;
+      bottom: calc(constant(safe-area-bottom), 10rem);
+      bottom: calc(env(safe-area-bottom), 10rem); */
+    }
+  </style>
+  <div class="bottom">
+    <button>按钮</button>
+  </div>
+</body>
+</html>

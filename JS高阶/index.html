@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>函数节流</title>
+</head>
+<style>
+  .lang{
+    height: 10000px;
+    background-color: aqua;
+  }
+</style>
+<body>
+  <div class="lang"></div>
+</body>
+<script src="./throttle.js"></script>
+<script>
+  let new_fn = throttle(function(){
+    console.log(111)
+  })
+  window.addEventListener('scroll',new_fn)
+</script>
+</html>

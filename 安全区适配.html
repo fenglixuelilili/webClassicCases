@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Document</title>
+</head>
+<style>
+  * {
+    padding: 0;
+    margin: 0;
+  }
+  html,body {
+    width: 100%;
+    height: 100%;
+  }
+  .bottom {
+    width: 100%;
+    height: 40px;
+    position: fixed;
+    bottom: 0;
+    bottom: constant(safe-area-inset-bottom);
+    bottom: env(safe-area-inset-bottom);
+    /* 如果不是0
+    bottom: 10rem;
+    bottom: calc(constant(safe-area-inset-bottom) + 10rem); */
+  }
+  button{
+    width: 100%;
+    height: 100%;
+  }
+</style>
+<body>
+  <div class="bottom">
+    <button>放假哈世纪东方黑龙江卡仕达复健科</button>
+  </div>
+</body>
+</html>
