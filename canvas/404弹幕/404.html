@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  *{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  #can{
+    background-color: #000;
+  }
+</style>
+<body>
+  <canvas id='can'></canvas>
+  <script>
+    // 
+    let w = window.innerWidth
+    let h = window.innerHeight
+    let canvas = document.querySelector('#can')
+    
+    canvas.width = w
+    canvas.height = h
+    // document.body.appendChild(canvas)
+    let ctx = canvas.getContext('2d')
+    // ctx.fillStyle = '#000'
+    // ctx.fillRect(0,0, w , h)
+    let text = ['undefine','NaN', '页面找不到了', '哈哈', 'der', '木了', '呵呵']
+    let text_number = 50 //页面要显示的文字个数
+    let word_info = [] //存储文字信息
+    let text_min = 10 //文字最小
+    let text_max = 50 // 文字最大
+    let keypress = false //是否点击了键盘
+    let acclerate = 3 // 速度
+
+    addEventListener('keydown',function(){
+      keypress = true
+    })
+    addEventListener('keyup',function(){
+      keypress = false
+    })
+    // 不同大小文字 返回不同的速度
+    function getspeed(size,flag){
+      return size * ( flag / 20 )
+    }
+    function getRandom(min,max){
+      return min + Math.random() * (max - min)
+    }
+
+    function distance(x,y,x1,y1){
+      return Math.sqrt((x1 - x) * (x1 - x) + (y1 - y) * (y1 - y))
+    }
+
+    // 存储文字坐标位置
+    function saveText(){
+      for(let i=0;i<text_number;i++) {
+        let t = {
+          x: getRandom(0,w),
+          y: getRandom(0,h),
+          text: text[ ~~getRandom( 0, text.length ) ],
+          size: ~~getRandom( text_min, text_max ),
+          color: `rgb(${~~getRandom(0,255)},${~~getRandom(0,255)},${~~getRandom(0,255)})`
+        }
+        word_info.push(t)
+      }
+    }
+    // 核心  ---- 绘制移动效果
+    function draw(){
+      // console.log(123)
+      // 清除画布
+      ctx.clearRect(0,0,w,h)
+      // ctx.fillStyle = `rgb(${~~getRandom(0,255)},${~~getRandom(0,255)},${~~getRandom(0,255)})`
+      // console.log(word_info.length)
+      for(let i=0;i<word_info.length;i++) {
+        ctx.fillStyle = word_info[i].color
+        ctx.font = word_info[i].size + 'px sans-serif'
+        // 获取文字宽度
+        let t_w = ctx.measureText(word_info[i].text)
+        // console.log(word_info[i].text, word_info[i].x, word_info[i].y)
+        ctx.fillText( word_info[i].text, word_info[i].x, word_info[i].y )
+        if( keypress ) {
+          // getspeed 键盘按下加速处理
+          word_info[i].x += getspeed(word_info[i].size,1)
+        }else{
+          word_info[i].x += getspeed(word_info[i].size,2)
+        }
+        // 将
+        if( word_info[i].x - t_w.width >=  w ){
+          word_info[i].x = -t_w.width
+        }
+      }
+      ctx.fill()
+      requestAnimationFrame(draw)
+    }
+    saveText()
+    draw()
+  </script>
+</body>
+</html>

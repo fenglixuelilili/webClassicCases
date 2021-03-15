@@ -6,7 +6,7 @@ function mp(arr) {
   
   for(let i = 0; i < arr.length; i++){
     let tmp = arr[i]
-    for(let j = i; j < arr.length; j++){
+    for(let j = i + 1; j < arr.length; j++){
       if(tmp > arr[j]){
         let t = tmp
         tmp = arr[j]
