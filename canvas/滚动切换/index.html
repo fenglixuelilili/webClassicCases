@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200vh;
+  }
+  #qq{
+    background-color: #000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+  }
+</style>
+<body>
+  <div>
+    <canvas width="500px" height="500px" id='qq'></canvas>
+  </div>
+  <script>
+    /** @type {HTMLCanvasElement} */
+    let canvas = document.querySelector('#qq')
+    let ctx = canvas.getContext('2d')
+    let width = 500
+    let height = 500
+    let img1 = new Image()
+    img1.src='./1.jpg'
+    let img2 = new Image()
+    img2.src = './2.jpg'
+    img2.onload = function(){
+      draw(0,img1,img2)
+    }
+    // precent 百分比, x , y
+    function draw( precent, bgimg, topimg){
+      // 计算圆的半径
+      let length = Math.sqrt( canvas.width*canvas.width + canvas.height*canvas.height )
+      ctx.save()
+      ctx.drawImage(bgimg,0,0,width,height)
+      ctx.beginPath()
+      ctx.arc(0,0,length*precent, 0 , 2 * Math.PI)
+      ctx.closePath()
+      ctx.clip()
+      ctx.drawImage(topimg,0,0,width,height)
+      ctx.restore()
+    }
+    window.addEventListener('scroll',()=>{
+      let scrolltop = Math.abs(document.documentElement.scrollTop)
+      let totalheight = document.body.scrollHeight
+      let documentheight = document.documentElement.clientHeight
+      console.log(totalheight,documentheight)
+      let precent = Math.abs(scrolltop / (totalheight - documentheight))
+      draw(precent,img1,img2)
+    })
+  </script>
+</body>
+</html>
