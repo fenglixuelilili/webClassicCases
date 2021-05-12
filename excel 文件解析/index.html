@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>文件上传解析</title>
+  </head>
+  <style>
+    .select button {
+      position: relative;
+    }
+    .select button input {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+    }
+  </style>
+  <body>
+    <div class="select">
+      <button>
+        上传excel文件
+        <input type="file" id="file" accept="xlsx" />
+      </button>
+      <button id='upload'>下载excel文件</button>
+    </div>
+    <!-- 数据展示层 -->
+    <div id="table"></div>
+    <script src="./utlis.js"></script>
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+    <script>
+      // XLSX
+      let file = document.querySelector("#file");
+      let upload = document.querySelector('#upload')
+      let datainfo = []
+      file.addEventListener("change", async function (e) {
+        let file = e.target.files[0];
+        let targetdata = await readFile(file);
+        let workbook = XLSX.read(targetdata, { type: "binary" });
+        console.log(workbook);
+        let names = workbook.SheetNames;
+        let resultarr = [];
+        names.forEach((name) => {
+          let json = XLSX.utils.sheet_to_json(workbook.Sheets[name]);
+          resultarr.push(json);
+        });
+        console.log(resultarr);
+        // 将映射数据显示出来
+        let mapState = {
+          name: {
+            type: "string",
+            value: "姓名",
+          },
+          age: {
+            type: "number",
+            value: "年龄",
+          },
+          sex: {
+            type: "string",
+            value: "性别",
+          },
+        };
+        resultarr = resultarr.flat(Infinity); //变为一维数组
+        resultarr = resultarr.map((item) => {
+          let obj = {};
+          for (let key in mapState) {
+            let value = item[ mapState[key].value ]
+            if( mapState[key].type === 'string' ) {
+              value = String(value)
+            } else if( mapState[key].type === 'number' ){
+              value = Number(value)
+            }
+            obj[key] = value
+          }
+          return obj
+        });
+        datainfo = resultarr
+        // console.log(resultarr)
+        let str = ``
+        let table = document.querySelector('#table')
+        resultarr.forEach(item=>{
+          str+=`<div> <span>姓名：${item.name}</span> | <span>姓别：${item.sex}</span> | <span>年龄：${item.age}</span> </div>`
+        })
+        table.innerHTML = str
+      });
+      upload.addEventListener('click', function(){
+        let sheet = XLSX.utils.json_to_sheet(datainfo)
+        let book = XLSX.utils.book_new()
+        XLSX.utils.book_append_sheet(book,sheet,'表1')
+        XLSX.writeFile(book, '自定义名字.xls')
+      })
+    </script>
+  </body>
+</html>
