@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.bootcdn.net/ajax/libs/pixi.js/4.5.5/pixi.js"></script>
+  <title></title>
+</head>
+<body>
+  
+</body>
+<script>
+  // alert(123)
+  // let type = 'WebGL'
+  // if(!PIXI.utils.isWebGLSupported()){
+  //   type = 'canvas'
+  // }
+  // PIXI.utils.sayHello(type)
+  let app = new PIXI.Application({
+    width: 400,
+    height: 600,
+    antialias: true,    // default: false 反锯齿
+    transparent: false, // default: false 透明度
+    resolution: 1       // default: 1 分辨率
+  })
+  // 添加背景图
+  let bgimg = new PIXI.Sprite.fromImage('./imgs/1.png')
+  bgimg.width = 400
+  bgimg.height = 600
+  bgimg.position.set(0,0)
+  app.stage.addChild(bgimg)
+  let loader = PIXI.loader,
+    resources = PIXI.loader.resources,
+    Sprite = PIXI.Sprite;
+  // // app.renderer.view.width 画布宽度
+  // // app.renderer.view.height 画布高度
+  // app.renderer.autoSize = true // 将画布大小调整到与分辨率匹配
+  // // app.renderer.resize(512,512)  更改画布宽高
+
+  // // 更改样式
+  // app.renderer.view.style.position='fixed'
+  // app.renderer.view.style.left='0'
+  // app.renderer.view.style.top='0'
+  // app.stage 舞台
+  // texture（纹理）
+  // // 创建纹理
+  // let  texture = PIXI.utils.TexureCache['imgs/1.png']
+  // // 创建精灵
+  // let sprite = new PIXI.Sprite(texture)
+  // console.log( texture )
+  // 实际使用
+  // .add('name', 'imgs/1.png')
+  loader
+    .add(['imgs/1.png','imgs/2.webp','imgs/09.png','imgs/10.png'])
+    // .add('tileset','imgs/09.png')
+    .on('progress',function(loader){
+      console.log(loader,'加载')
+    })
+    .load(setup)
+  function setup(){
+    let sprite = new Sprite(resources['imgs/1.png'].texture)
+    // 精灵图的坐标
+    sprite.x = 50
+    sprite.y = 50
+    // sprite.width = 100
+    // sprite.height = 100
+    sprite.scale.x = 0.8
+    sprite.scale.y = 0.8
+    // 综合缩放
+    sprite.scale.set(0.8,0.8)
+    // 设置精灵的中心位置
+    // sprite.anchor.x = 0.5 通过改变锚点，这样设置会有副作用
+    // sprite.anchor.y = 0.5
+    // sprite.anchor.set(0.5,0.5)
+    // anchor 是设置百分比
+    // pivot 是设置具体的数 sprite.pivot.set(100,100)
+    sprite.rotation = 0.5
+    // let sprite2 = new Sprite(resources['imgs/2.webp'].texture)
+    // console.log(sprite)
+    // sprite.visible = false 将精灵隐藏
+    // console.log(sprite)
+    // 将精灵添加到画布中
+    // app.stage.addChild(sprite)
+    // app.stage.addChild(sprite2)
+    /*
+    * ----------------------------
+    */
+    //  console.log(PIXI.TextureCache.baseTexture['imgs/09.png'])
+    let tileset = PIXI.utils.TextureCache['imgs/09.png'] //创建纹理图
+    let tileset2 = PIXI.utils.TextureCache['imgs/10.png'] //创建纹理图
+    let rectangle = new PIXI.Rectangle(96,64,32,32)
+    let rectangle2 = new PIXI.Rectangle(0,64,32,32)
+    //  console.log(tileset,rectangle)
+    tileset.frame = rectangle
+    tileset2.frame = rectangle2
+    let sprite1 = new PIXI.Sprite(tileset)
+    let sprite2 = new PIXI.Sprite(tileset2)
+    sprite1.position.set(0,0)
+    sprite2.position.set(32,32)
+    // sprite.x = 32
+    // sprite.y = 32
+
+    // 精灵分组
+    // 1.创建精灵容器
+    let  contains = new PIXI.Container()
+    // 另一种精灵容器：例子容器
+    // let contains = new PIXI.particles.ParticleContainer()
+    contains.position.set(64,64)
+    contains.addChild(sprite1)
+    contains.addChild(sprite2)
+    // 分组的全局坐标与局部坐标
+    // 局部坐标
+     console.log(sprite1.x)
+    //  全局坐标
+    console.log(contains.toGlobal(sprite1.position).x)
+    // 全局坐标
+    console.log(sprite1.getGlobalPosition().x)
+    // tileset
+    // app.stage.addChild(rocket)
+    app.stage.addChild(contains)
+    //  重新渲染画布
+    app.renderer.render(app.stage)
+    
+    //  tileset.frame = rectangle
+    //  console.log(tileset)
+    // 创建游戏循环
+    // app.ticker.add(time => gameloop(time))
+    // function gameloop(time){
+    //   // 精灵的移动速度
+    //   rocket.vx = 1
+    //   rocket.vy = 0.0
+    //   rocket.x += rocket.vx //精灵移动
+    //   rocket.y += rocket.vy //精灵移动
+    // }
+
+    // 创建图形创建器
+    let rectange = new PIXI.Graphics()
+    // 
+    rectange.beginFill(0x66CCFF)
+    rectange.lineStyle(4, 0xFF3300, 1)
+    // 绘制矩形
+    rectange.drawRect(0,0,100,100)
+    rectange.drawCircle(100,100,20)
+    rectange.endFill()
+    app.stage.addChild(rectange)
+    // 画线
+    let rectangeline = new PIXI.Graphics()
+    rectangeline.lineStyle(2,0xFFFFFF,1)
+    rectangeline.moveTo(0,0)
+    rectangeline.lineTo(80,50)
+    
+    // 绘制多边形
+    // 例如绘制三角形
+    let spath = [
+      10,10,
+      200,30,
+      30,100
+    ]
+    rectangeline.beginFill(0x66FF33)
+    rectangeline.drawPolygon(spath)
+    rectangeline.endFill()
+    app.stage.addChild(rectangeline)
+
+    // 写文字
+    let message = new PIXI.Text('你好，我是pixi', new PIXI.TextStyle({
+      fontFamily: "Arial",
+      fontSize: 36,
+      fill: "white",
+      // stroke: '#ff3300',
+      strokeThickness: 4,
+      dropShadow: true,
+      dropShadowColor: "#000000",
+      dropShadowBlur: 4,
+      dropShadowAngle: Math.PI / 6,
+      dropShadowDistance: 6,
+    }))
+    message.text = '修改'
+    // 修改样式
+    // message.style = { xxxxx }
+    // 例如换行
+    // message.style = {wordWrap: true, wordWrapWidth: 100, align: center}
+    // console.log(app.stage.width)
+    message.position.set( app.view.width/2 - message.width/2, app.view.height/2 )
+    app.stage.addChild(message)
+    if(hitTestRectangle(rectange,rectangeline)){
+      message.text = '碰上了'
+      rectangeline.tint = 0xff3300
+    }
+    // 碰撞监测函数
+    function hitTestRectangle(r1, r2) {
+      //Define the variables we'll need to calculate
+      let hit, combinedHalfWidths, combinedHalfHeights, vx, vy;
+      //hit will determine whether there's a collision
+      hit = false;
+      //Find the center points of each sprite
+      r1.centerX = r1.x + r1.width / 2;
+      r1.centerY = r1.y + r1.height / 2;
+      r2.centerX = r2.x + r2.width / 2;
+      r2.centerY = r2.y + r2.height / 2;
+
+      //Find the half-widths and half-heights of each sprite
+      r1.halfWidth = r1.width / 2;
+      r1.halfHeight = r1.height / 2;
+      r2.halfWidth = r2.width / 2;
+      r2.halfHeight = r2.height / 2;
+      //Calculate the distance vector between the sprites
+      vx = r1.centerX - r2.centerX;
+      vy = r1.centerY - r2.centerY;
+      //Figure out the combined half-widths and half-heights
+      combinedHalfWidths = r1.halfWidth + r2.halfWidth;
+      combinedHalfHeights = r1.halfHeight + r2.halfHeight;
+      //Check for a collision on the x axis
+      if (Math.abs(vx) < combinedHalfWidths) {
+        //A collision might be occurring. Check for a collision on the y axis
+        if (Math.abs(vy) < combinedHalfHeights) {
+          //There's definitely a collision happening
+          hit = true;
+        } else {
+          //There's no collision on the y axis
+          hit = false;
+        }
+      } else {
+        //There's no collision on the x axis
+        hit = false;
+      }
+      //`hit` will be either `true` or `false`
+      return hit;
+    };
+  }
+  document.body.appendChild(app.view)
+</script>
+</html>
