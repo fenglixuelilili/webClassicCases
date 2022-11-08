@@ -1,0 +1,9 @@
+dom渲染原理：
+
+1. 解析html文件 获取 dom树
+ -- dom树 就是 顶级html > header/body > div 等等
+2. 解析css 与 dom树合成解析成渲染树
+3. 渲染树上面的节点要比 dom树上的节点少，例如一些 header 等信息没有， 一些设置 display: node的 也是没有的
+4. 进入layout阶段，即对渲染树进行绘制，绘制节点的位置和大小
+5. paint操作，就是对节点就行涂鸦，绘制上色等操作文字颜色等， 最终会生成位图
+6. composite 操作，将上面生成的位图 从cup放到GPU上面进行渲染
