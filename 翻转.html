@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    .container {
+      perspective: 1000;
+      transform-style: preserve-3d;
+    }
+    .container,
+    .front,
+    .back {
+      width: 380px;
+      height: 270px;
+    }
+    .flip {
+      position: relative;
+      transition: 0.6s;
+      transform-style: preserve-3d;
+    }
+    .front,
+    .back {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      backface-visibility: hidden;
+    }
+    .front {
+      z-index: 2;
+    }
+    .back {
+      transform: rotateY(-180deg);
+    }
+    .container:hover .flip {
+      transform: rotateY(180deg);
+    }
+    .front {
+      background-color: red;
+      color: #fff;
+    }
+    .back {
+      /* background-color: black; */
+      color: #fff;
+    }
+  </style>
+  <body>
+    <div class="container">
+      <div class="flip">
+        <p class="front">front</p>
+        <p class="back">back</p>
+      </div>
+    </div>
+  </body>
+</html>
