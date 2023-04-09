@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    .box {
+      width: 100px;
+      height: 100px;
+      background-color: rebeccapurple;
+      /* opacity: 1; */
+    }
+    audio {
+      display: block;
+    }
+    audio:not([controls]) {
+      display: block !important;
+    }
+  </style>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <body>
+    <!-- <div class="box"></div> -->
+    <!-- <audio
+      controls
+      src="https://182.92.165.9:9100/H1audio/20220729/20220729170720_7_yynl_18629080428%23621838343501443952.wav"
+    ></audio>
+    <video
+      src="https://eeop-api.izxedu.com/v1/double_call/audio/play?session_id=621838343501443952"
+    ></video> -->
+  </body>
+  <script>
+    // var xhr = new XMLHttpRequest()
+    // xhr.open(
+    //   "GET",
+    //   "https://eeop-api.izxedu.com/v1/double_call/audio/play?session_id=621838343501443952",
+    //   true
+    // )
+    // xhr.onload = function () {
+    //   console.log(xhr.responseURL) // http://example.com/test
+    // }
+    // xhr.onerror = function (err) {
+    //   console.log(xhr.responseURL, err) // http://example.com/test
+    // }
+    // xhr.send(null)
+    // axios
+    //   .get(
+    //     "https://eeop-api.izxedu.com/v1/double_call/audio/play?session_id=621838343501443952"
+    //   )
+    //   .then((data) => {
+    //     console.log(data)
+    //   })
+    let box = document.querySelector(".box")
+    // 返回动画实例
+    let animate = box.animate(
+      [
+        // 设置动画的每一帧
+        {
+          opacity: 1,
+          transform: "rotate(0) scale(1)",
+        },
+        {
+          opacity: 0.4,
+          transform: "rotate(180deg) scale(0.5)",
+          offset: 0.8,
+        },
+        {
+          opacity: 0.1,
+          transform: "rotate(180deg) scale(0.3)",
+        },
+      ],
+      {
+        // 规定动画完成一个周期所花费的秒或毫秒。默认是 0。 css3对应的是 animation-duration
+        duration: 3000,
+        // 规定动画被播放的次数。默认是 1。 css3对应的是 	animation-iteration-count
+        iterations: 1, // 无限运动
+        // 规定动画的速度曲线。 css3 对应的是 animation-timing-function
+        // easing 的默认值是 linear，而 animation-timing-function 的默认值是 ease。在使用 WAAPI 时应使用恰当的 easing ，以免让动画变得机械和乏味( 默认的 linear 表示动画从头到尾的速度是相同的 )。
+        easing: "ease-in-out", // 动画的效果
+        // 动画延迟 css3 对应的是 animation-delay
+        delay: 0,
+        // 规定动画是否在下一周期逆向地播放。默认是 'normal' 。 css3对应的是 	animation-direction
+        direction: "normal",
+        // 规定动画在播放之前或之后，其动画效果是否可见。 css3 对应的是 animation-fill-mode
+        fill: "forwards",
+      }
+    )
+    // 第一种方式 是用promise的方式
+    animate.finished.then(() => {
+      console.log("动画播放完成")
+    })
+    // 第二种 使用回调的方式
+    animate.onfinish = function () {
+      console.log("动画播放完成")
+    }
+    // 常用方法
+    // animate.cancel() // 取消动画
+    // animate.pause() // 暂停
+    // animate.finish() // 完成动画
+    // animate.play() // 开始播放
+    // animate.reverse() // 反向播放
+  </script>
+</html>

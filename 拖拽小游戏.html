@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>拖拽小游戏</title>
+  </head>
+  <script>
+    let html = document.getElementsByTagName("html")[0],
+      htmlWidth =
+        document.documentElement.clientWidth || document.body.clientWidth
+    html.style.fontSize = htmlWidth / 37.5 + "px"
+  </script>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+    .top-wrapper-box,
+    .bottom-wrapper-box {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .bottom-wrapper-box {
+      margin-top: 30px;
+    }
+    .top-wrapper-box .top-wrapper-list,
+    .bottom-wrapper-list {
+      width: 25vw;
+      height: 25vw;
+      padding: 15px;
+    }
+    .bottom-wrapper-list {
+      /* padding-top: 0; */
+      margin-top: -15px;
+    }
+    .top-wrapper-box .top-wrapper-list .top-wrapper,
+    .bottom-wrapper-box .bottom-wrapper-list .bottom-wrapper {
+      border: 1px solid #eee;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      /* background-color: orange; */
+    }
+    .bottom-wrapper-box .bottom-wrapper-list .bottom-wrapper {
+      background-color: orange;
+      color: #fff;
+      padding-top: 0;
+    }
+  </style>
+  <body>
+    <!-- 顶部wrapper -->
+    <div class="top-wrapper-box">
+      <div class="top-wrapper-list">
+        <div class="top-wrapper"></div>
+      </div>
+      <div class="top-wrapper-list">
+        <div class="top-wrapper"></div>
+      </div>
+      <div class="top-wrapper-list">
+        <div class="top-wrapper"></div>
+      </div>
+      <div class="top-wrapper-list">
+        <div class="top-wrapper"></div>
+      </div>
+    </div>
+    <!-- 内容wrapper -->
+    <div class="bottom-wrapper-box"></div>
+  </body>
+  <script>
+    let groupChars = ["一生一世", "虎虎生威", "牛年大吉", "瑟瑟发抖"]
+    function mapChars(arr) {
+      return arr
+        .map((item) => {
+          return [...item.split("")]
+        })
+        .flat()
+    }
+    function sort(a, b) {
+      return Math.random() > 0.5 ? -1 : 1
+    }
+    let bottomWrapperBox = document.querySelector(".bottom-wrapper-box")
+    let initialPosition = {} // 记录所有元素的初始位置
+    function render(groupChars) {
+      let chars = mapChars(groupChars).sort(sort)
+      let htmlChars = ""
+      for (let i = 0; i < chars.length; i++) {
+        htmlChars += `
+        <div class="bottom-wrapper-list">
+          <div class="bottom-wrapper">${chars[i]}</div>
+        </div>
+        `
+      }
+      bottomWrapperBox.innerHTML = htmlChars
+    }
+    function bindEvents() {
+      let wrappers = document.querySelectorAll(
+        ".bottom-wrapper-box .bottom-wrapper-list"
+      )
+      console.log(wrappers)
+      function touchstart(e) {
+        console.log(e)
+        console.log(this)
+      }
+      function touchmove(e) {}
+      function touchend(e) {}
+      for (let i = 0; i < wrappers.length; i++) {
+        let wrapper = wrappers[i]
+        let contentDom = wrapper.querySelector(".bottom-wrapper")
+        console.log(contentDom.offsetLeft)
+        contentDom.addEventListener("touchstart", touchstart)
+        contentDom.addEventListener("touchmove", touchmove)
+        contentDom.addEventListener("touchend", touchend)
+      }
+    }
+    render(groupChars)
+    bindEvents()
+  </script>
+</html>
